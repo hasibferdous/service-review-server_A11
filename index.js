@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ambheuq.mongodb.net/?retryWrites=true&w=majority`;
-//console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
@@ -55,28 +54,12 @@ async function run() {
             const result = await orderCollection.insertOne(order);
             res.send(result);
         });
-
-
-
-
-
-
-        app.post('/reviews', async (req, res) => {
+    app.post('/reviews', async (req, res) => {
              const order = req.body;
              const result = await orderCollection.insertOne(order);
              res.send(result);
          });
-
-
-
-
-
-
-
-
-
-
-         app.patch('/reviews/:id', async (req, res) => {
+    app.patch('/reviews/:id', async (req, res) => {
              const id = req.params.id;
              const status = req.body.status
              const query = { _id: ObjectId(id) }
@@ -87,16 +70,13 @@ async function run() {
              }
              const result = await orderCollection.updateOne(query, updatedDoc);
              res.send(result);
-         })
-
-         app.delete('/reviews/:id', async (req, res) => {
+    })
+    app.delete('/reviews/:id', async (req, res) => {
              const id = req.params.id;
              const query = { _id: ObjectId(id) };
              const result = await orderCollection.deleteOne(query);
              res.send(result);
-         })
-
-
+    })
     }
     finally {
 
