@@ -18,7 +18,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         const serviceCollection = client.db('food').collection('services');
-        const orderCollection = client.db('smartCar').collection('orders');
+        const orderCollection = client.db('food').collection('reviews');
 
         app.get('/services', async (req, res) => {
             const query = {}
@@ -36,7 +36,7 @@ async function run() {
 
 
         // orders api
-        app.get('/orders', async (req, res) => {
+        app.get('/reviews', async (req, res) => {
            let query = {};
 
              if (req.query.email) {
@@ -50,13 +50,33 @@ async function run() {
             res.send(orders);
          });
 
-        app.post('/orders', async (req, res) => {
+         app.post('/services', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        });
+
+
+
+
+
+
+        app.post('/reviews', async (req, res) => {
              const order = req.body;
              const result = await orderCollection.insertOne(order);
              res.send(result);
          });
 
-         app.patch('/orders/:id', async (req, res) => {
+
+
+
+
+
+
+
+         
+
+         app.patch('/reviews/:id', async (req, res) => {
              const id = req.params.id;
              const status = req.body.status
              const query = { _id: ObjectId(id) }
@@ -69,7 +89,7 @@ async function run() {
              res.send(result);
          })
 
-         app.delete('/orders/:id', async (req, res) => {
+         app.delete('/reviews/:id', async (req, res) => {
              const id = req.params.id;
              const query = { _id: ObjectId(id) };
              const result = await orderCollection.deleteOne(query);
